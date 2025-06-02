@@ -15,20 +15,19 @@
   />
 
   <style>
-    /* Reset any default margins/padding (helps inside an iframe) */
+    /* 1) Reset margins/padding so content is flush to the iframe */
     html, body {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f3f4f6; /* Tailwind gray-100 */
-      padding: 1rem;           /* some breathing room */
+      padding: 1rem;           /* breathing room */
     }
 
-    /* Generic “card” styling */
+    /* 2) Generic “card” styling */
     .card {
       background-color: white;
       border-radius: 0.5rem; /* rounded-lg */
@@ -39,7 +38,7 @@
       margin-bottom: 1.5rem; /* mb-6 */
     }
 
-    /* Pricing‐tier card styling */
+    /* 3) Pricing‐tier card styling */
     .tier-card {
       text-align: center;
       border: 1px solid #e5e7eb; /* gray-200 */
@@ -55,24 +54,24 @@
         0 4px 6px -2px rgba(0, 0, 0, 0.1);
     }
 
-    /* Text colors for each plan */
-    .plan-silver  { color: #3b82f6; } /* blue-500 */
-    .plan-gold    { color: #ca8a04; } /* yellow-600 */
-    .plan-diamond { color: #a855f7; } /* purple-600 */
+    /* 4) Text colors for each plan */
+    .plan-silver  { color: #3b82f6; }  /* blue-500 */
+    .plan-gold    { color: #ca8a04; }  /* yellow-600 */
+    .plan-diamond { color: #a855f7; }  /* purple-600 */
 
-    /* “Recommended” background + border for each plan */
-    .recommended-plan-silver  { border-color: #3b82f6; background-color: #eff6ff; } /* blue-50 */
-    .recommended-plan-gold    { border-color: #ca8a04; background-color: #fefce8; } /* yellow-50 */
-    .recommended-plan-diamond { border-color: #a855f7; background-color: #faf5ff; } /* purple-50 */
+    /* 5) “Recommended” background + border for each plan */
+    .recommended-plan-silver   { border-color: #3b82f6; background-color: #eff6ff; } /* blue-50 */
+    .recommended-plan-gold     { border-color: #ca8a04; background-color: #fefce8; } /* yellow-50 */
+    .recommended-plan-diamond  { border-color: #a855f7; background-color: #faf5ff; } /* purple-50 */
 
-    /* Manual‐selection highlight (thick green border) */
+    /* 6) Manual‐selection highlight (thick green border) */
     .manual-selection-highlight {
       border-width: 3px !important;
       border-color: #10B981 !important; /* green-500 */
       box-shadow: 0 0 0 3px #10B981;
     }
 
-    /* Labels and inputs styling */
+    /* 7) Labels and inputs styling */
     label {
       font-weight: 500;   /* medium */
       color: #374151;     /* gray-700 */
@@ -97,7 +96,7 @@
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
     }
 
-    /* Numeric output styling */
+    /* 8) Numeric output styling */
     .output-value {
       font-weight: 600; /* semibold */
     }
@@ -106,14 +105,14 @@
 
 <body>
   <div class="max-w-6xl mx-auto">
-    <!-- Header -->
+    <!-- === Header === -->
     <header class="mb-8 text-center">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
         Panoptyc Dining Theft Plans
       </h1>
     </header>
 
-    <!-- Grid: Sidebar (Inputs) - Main (Results) -->
+    <!-- === Grid: Sidebar (Inputs) + Main (Results) === -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Sidebar: Cafe Inputs -->
       <div class="md:col-span-1 card">
@@ -127,7 +126,7 @@
           <input
             type="number"
             id="annualRevenue"
-            value="1000000"
+            value="10000000"
             min="0"
             step="1000"
           />
@@ -137,7 +136,7 @@
           <input
             type="number"
             id="shrinkPercent"
-            value="10"
+            value="20"
             min="0"
             max="100"
             step="0.1"
@@ -161,15 +160,15 @@
         </div>
       </div>
 
-      <!-- Main Content: Pricing Tiers, Recommendation, Metrics, Value -->
+      <!-- Main Content: Pricing Tiers + Recommendation + Metrics + Value -->
       <div class="md:col-span-2 space-y-6">
-        <!-- 1) Pricing Tiers Card -->
+        <!-- 1) Pricing Tiers (Monthly) Card -->
         <div class="card">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">
             Pricing Tiers (Monthly)
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <!-- Silver Plan -->
+            <!-- Silver Plan Card -->
             <div
               id="silverPlanCard"
               class="tier-card plan-silver"
@@ -184,7 +183,7 @@
               </p>
             </div>
 
-            <!-- Gold Plan -->
+            <!-- Gold Plan Card -->
             <div
               id="goldPlanCard"
               class="tier-card plan-gold"
@@ -199,7 +198,7 @@
               </p>
             </div>
 
-            <!-- Diamond Plan -->
+            <!-- Diamond Plan Card -->
             <div
               id="diamondPlanCard"
               class="tier-card plan-diamond"
@@ -267,7 +266,7 @@
             </div>
             <div class="flex justify-between">
               <span>
-                Savings per $1 Spent (on <span id="planNameLabel2">—</span> Plan):
+                Savings per \$1 Spent (on <span id="planNameLabel2">—</span> Plan):
               </span>
               <span class="output-value text-green-600" id="savingsPerDollarSpentMetric">
                 $0.00
@@ -282,10 +281,12 @@
             Value Proposition
           </h2>
           <p class="text-gray-800">
-            For every $1 spent on the
-            <span class="font-semibold" id="valuePropPlan">—</span> Plan, you get
-            back:
-            <span class="font-semibold text-green-600" id="valuePropROI">$0.00</span>
+            For every \$1 spent on the
+            <span class="font-semibold" id="valuePropPlan">—</span> Plan, you
+            get back:
+            <span class="font-semibold text-green-600" id="valuePropROI">
+              \$0.00
+            </span>
             in reduced theft.
           </p>
         </div>
@@ -293,9 +294,9 @@
     </div>
   </div>
 
-  <!-- JavaScript: (ROI – 2.0) Recommendation Logic -->
+  <!-- JavaScript: (ROI – 2.0) Recommendation Logic Restored Below -->
   <script>
-    // 1) Track manual override when a plan card is clicked
+    // 1) Track manual override when user clicks a plan
     let manuallySelectedPlanName = null;
 
     // 2) Plan definitions
@@ -377,7 +378,7 @@
       diamondMonthlyCostEl.textContent = formatCurrency(plans.Diamond.pricePerKiosk * numKiosks) + '/mo';
       diamondReviewsEl.textContent     = (plans.Diamond.reviewsPerKiosk * numKiosks).toLocaleString() + ' reviews/mo';
 
-      // 2) Clear all previous highlights from the tier cards
+      // 2) Clear previous highlighting
       Object.values(plans).forEach(planData => {
         const card = document.getElementById(planData.cardId);
         card.classList.remove('border-2', planData.recommendedClass, 'manual-selection-highlight');
@@ -389,7 +390,7 @@
       const currentAnnualShrinkDollars = annualRevenue * shrinkPercent;
       currentShrinkDollarsEl.textContent = formatCurrency(currentAnnualShrinkDollars);
 
-      // 4) Recommendation logic using “(ROI – 2.0)” approach
+      // 4) Recommendation logic: choose plan whose (ROI – 2.0) is smallest ≥ 0
       const hypotheticalSavings = currentAnnualShrinkDollars * 0.25; // 25% of shrink
       const ROI_TARGET = 2.0;
       let autoRecommendedPlanName = "N/A";
@@ -402,7 +403,7 @@
           if (annualCost <= 0) return;
           const roi = hypotheticalSavings / annualCost;
           const difference = roi - ROI_TARGET;
-          // Choose the plan whose difference (roi–2.0) is ≥0 and smallest
+          // If this plan’s difference ≥ 0 and < smallestDifference, pick it
           if (difference >= 0 && difference < smallestDifference) {
             smallestDifference = difference;
             autoRecommendedPlanName = name;
@@ -416,12 +417,12 @@
         }
       }
 
-      // 5) Determine “final” plan (manual override or auto recommendation)
+      // 5) Determine “final” plan (manual override or auto)
       const finalPlanName = manuallySelectedPlanName || autoRecommendedPlanName;
       const finalPlanDetails = plans[finalPlanName] || plans.Silver;
       const finalAnnualCost = finalPlanDetails.pricePerKiosk * numKiosks * 12;
 
-      // 6) Highlight the auto‐recommended card (light bg + border)
+      // 6) Highlight auto‐recommended card (light bg + border)
       if (autoBestPlanDetails) {
         const recCard = document.getElementById(autoBestPlanDetails.cardId);
         recCard.classList.add(autoBestPlanDetails.recommendedClass, 'border-2');
@@ -430,26 +431,26 @@
         if (autoBestPlanDetails.colorClass === 'plan-diamond')  recCard.style.borderColor = '#a855f7';
       }
 
-      // 7) If user manually clicked, override highlight with green border
+      // 7) If user manually clicked, override with green highlight
       if (manuallySelectedPlanName) {
         const selCard = document.getElementById(finalPlanDetails.cardId);
         selCard.classList.add('manual-selection-highlight');
       }
 
-      // 8) Update “Recommended Plan” panel text + border
+      // 8) Update “Recommended Plan” text + border
       recommendedPlanEl.innerHTML = `Recommended Plan: <span class="font-bold ${finalPlanDetails.colorClass}">${finalPlanName.toUpperCase()}</span>`;
       recommendationCardEl.classList.add('border-2');
       if (finalPlanDetails.colorClass === 'plan-silver')   recommendationCardEl.style.borderColor = '#3b82f6';
       if (finalPlanDetails.colorClass === 'plan-gold')     recommendationCardEl.style.borderColor = '#ca8a04';
       if (finalPlanDetails.colorClass === 'plan-diamond')  recommendationCardEl.style.borderColor = '#a855f7';
 
-      // 9) If inputs invalid, show warning text instead
+      // 9) If inputs invalid, show warning instead
       if (annualRevenue <= 0 || shrinkPercent <= 0 || numKiosks <= 0) {
         recommendedPlanEl.textContent = "Recommended Plan: ENTER VALID VALUES";
         recommendedPlanEl.className = "text-lg text-orange-600";
       }
 
-      // 10) Populate Shrink Metrics & ROI using the “final” plan
+      // 10) Shrink Metrics & ROI updates
       panoptycAnnualCostEl.textContent = formatCurrency(finalAnnualCost);
 
       const projectedReductionDollars = currentAnnualShrinkDollars * anticipatedReductionPercent;
@@ -464,17 +465,17 @@
       roiPerDollarEl.textContent = formatCurrency(savingsPerDollar);
       savingsPerDollarSpentMetricEl.textContent = formatCurrency(savingsPerDollar);
 
-      // 11) Insert plan name into the labels
+      // 11) Fill in plan names inside labels
       planNameLabel.textContent = finalPlanName;
       planNameLabel2.textContent = finalPlanName;
       valuePropPlanEl.textContent = finalPlanName;
       valuePropROIEl.textContent = formatCurrency(savingsPerDollar);
 
-      // 12) Update “(Showing metrics for …)” text
+      // 12) Update “(Showing metrics for …)” note
       metricsForPlanInfoEl.textContent = `(Showing metrics for ${finalPlanName} plan)`;
     }
 
-    // 13) Recalculate whenever inputs change
+    // 13) Recalculate whenever any input changes
     [numKiosksInput, annualRevenueInput, shrinkPercentInput, anticipatedReductionInput].forEach(input => {
       input.addEventListener('input', () => {
         manuallySelectedPlanName = null; // clear manual override
@@ -482,7 +483,7 @@
       });
     });
 
-    // 14) Manual override: plan card clicks
+    // 14) Manual selection: clicking a plan card
     Object.keys(plans).forEach(planName => {
       const cardElement = document.getElementById(plans[planName].cardId);
       cardElement.addEventListener('click', () => {
@@ -491,7 +492,7 @@
       });
     });
 
-    // 15) Initial render
+    // 15) Initial render on page load
     calculateAndDisplay();
   </script>
 </body>
