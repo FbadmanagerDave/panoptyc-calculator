@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panoptyc Dining Theft Plans</title>
+
+  <!-- Tailwind CDN (okay for a standalone HTML) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font (used by the CSS below) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .plan-silver { color: #3b82f6; }
+    .plan-gold   { color: #ca8a04; }
+    .plan-diamond{ color: #a855f7; }
+    .recommended-plan-silver { border-color: #3b82f6; background-color: #eff6ff; }
+    .recommended-plan-gold   { border-color: #ca8a04; background-color: #fefce8; }
+    .recommended-plan-diamond{ border-color: #a855f7; background-color: #faf5ff; }
+    .manual-selection-highlight {
+      border-width: 3px !important;
+      border-color: #10B981 !important; /* Tailwind green-500 */
+      box-shadow: 0 0 0 3px #10B981;
+    }
+    label {
+      font-weight: 500;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #374151;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      box-shadow: inset 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+    .output-value {
+      font-weight: 600;
+    }
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+                  0 2px 4px -2px rgb(0 0 0 / 0.1);
+      margin-bottom: 1.5rem;
+    }
+    .tier-card {
+      text-align: center;
+      border: 1px solid #e5e7eb;
+      cursor: pointer; /* Indicate clickable */
+      transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+    .tier-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px -1px rgb(0 0 0 / 0.1),
+                  0 4px 6px -2px rgb(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-8 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
+        Panoptyc Dining Theft Plans
+      </h1>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Inputs Column -->
+      <div class="md:col-span-1 card">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Cafe Inputs</h2>
+        <div class="input-group">
+          <label for="numKiosks">Number of Kiosks:</label>
+          <input
+            type="number"
+            id="numKiosks"
+            value="2"
+            min="1"
+            class="form-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="annualRevenue">Annual Revenue ($):</label>
+          <input
+            type="number"
+            id="annualRevenue"
+            value="1000000"
+            min="0"
+            step="1000"
+            class="form-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="shrinkPercent">Current Shrink (%):</label>
+          <input
+            type="number"
+            id="shrinkPercent"
+            value="10"
+            min="0"
+            max="100"
+            step="0.1"
+            class="form-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="anticipatedReduction">Anticipated Theft Reduction by Panoptyc (%):</label>
+          <input
+            type="number"
+            id="anticipatedReduction"
+            value="50"
+            min="0"
+            max="100"
+            step="1"
+            class="form-input"
+          />
+          <p class="text-xs text-gray-500 mt-1">
+            Used for Shrink Metrics & ROI per $1 calculations.
+          </p>
+        </div>
+      </div>
+
+      <!-- Output / Plans Column -->
+      <div class="md:col-span-2">
+        <div class="card">
+          <h2 class="text-xl font-semibold text-gray-700 mb-4">
+            Pricing Tiers (Monthly)
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div id="silverPlanCard" class="tier-card p-4 rounded-lg">
+              <h3 class="text-lg font-semibold plan-silver">Silver Plan</h3>
+              <p class="text-2xl font-bold plan-silver my-2" id="silverMonthlyCost">
+                $0/mo
+              </p>
+              <p class="text-sm text-gray-600">
+                <span id="silverReviews">0</span> reviews/mo
+              </p>
+            </div>
+
+            <div id="goldPlanCard" class="tier-card p-4 rounded-lg">
+              <h3 class="text-lg font-semibold plan-gold">Gold Plan</h3>
+              <p class="text-2xl font-bold plan-gold my-2" id="goldMonthlyCost">
+                $0/mo
+              </p>
+              <p class="text-sm text-gray-600">
+                <span id="goldReviews">0</span> reviews/mo
+              </p>
+            </div>
+
+            <div id="diamondPlanCard" class="tier-card p-4 rounded-lg">
+              <h3 class="text-lg font-semibold plan-diamond">
+                Diamond Plan
+              </h3>
+              <p class="text-2xl font-bold plan-diamond my-2" id="diamondMonthlyCost">
+                $0/mo
+              </p>
+              <p class="text-sm text-gray-600">
+                <span id="diamondReviews">0</span> reviews/mo
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="recommendationCard" class="card">
+          <h2 class="text-xl font-semibold text-gray-700 mb-2">
+            Plan Recommendation
+          </h2>
+          <p class="text-lg" id="recommendedPlan">Calculating...</p>
+          <p class="text-xs text-gray-500 mt-1" id="recommendationBasis">
+            plan recommendation based on number of kiosks and annual shrink
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-gray-700">Shrink Metrics</h2>
+            <p id="metricsForPlanInfo" class="text-sm text-gray-600"></p>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span>Current Annual Shrink ($):</span>
+              <span class="output-value" id="currentShrinkDollars">
+                $0.00
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span>Panoptyc Annual Cost (Selected Plan) ($):</span>
+              <span class="output-value" id="panoptycAnnualCost">
+                $0.00
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span>Projected Annual Shrink Reduction ($):</span>
+              <span class="output-value" id="projectedShrinkReduction">
+                $0.00
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span>Net Annual Savings (ROI in $) ($):</span>
+              <span class="output-value" id="netAnnualSavings">
+                $0.00
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span>Savings per $1 spent (on Selected Plan):</span>
+              <span class="output-value text-green-600" id="savingsPerDollarSpentMetric">
+                $0.00
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="text-xl font-semibold text-gray-700 mb-2">Value Proposition</h2>
+          <p>
+            For every $1 spent on the Selected Panoptyc Plan, you get back:
+            <span class="output-value text-green-600" id="roiPerDollar">
+              $0.00
+            </span>
+            in reduced theft.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------------------------------------------------
+       Begin Original JavaScript (no changes)
+       ------------------------------------------------------------ -->
+  <script>
+    let manuallySelectedPlanName = null;
+    const plans = {
+      Silver: {
+        pricePerKiosk: 300,
+        reviewsPerKiosk: 16,
+        colorClass: "plan-silver",
+        cardId: "silverPlanCard",
+        recommendedClass: "recommended-plan-silver"
+      },
+      Gold: {
+        pricePerKiosk: 450,
+        reviewsPerKiosk: 24,
+        colorClass: "plan-gold",
+        cardId: "goldPlanCard",
+        recommendedClass: "recommended-plan-gold"
+      },
+      Diamond: {
+        pricePerKiosk: 750,
+        reviewsPerKiosk: 48,
+        colorClass: "plan-diamond",
+        cardId: "diamondPlanCard",
+        recommendedClass: "recommended-plan-diamond"
+      }
+    };
+    const numKiosksInput        = document.getElementById("numKiosks");
+    const annualRevenueInput    = document.getElementById("annualRevenue");
+    const shrinkPercentInput    = document.getElementById("shrinkPercent");
+    const anticipatedReductionInput = document.getElementById("anticipatedReduction");
+    const silverMonthlyCostEl   = document.getElementById("silverMonthlyCost");
+    const silverReviewsEl       = document.getElementById("silverReviews");
+    const goldMonthlyCostEl     = document.getElementById("goldMonthlyCost");
+    const goldReviewsEl         = document.getElementById("goldReviews");
+    const diamondMonthlyCostEl  = document.getElementById("diamondMonthlyCost");
+    const diamondReviewsEl      = document.getElementById("diamondReviews");
+    const recommendedPlanEl     = document.getElementById("recommendedPlan");
+    const recommendationCardEl  = document.getElementById("recommendationCard");
+    const recommendationBasisEl = document.getElementById("recommendationBasis");
+    const metricsForPlanInfoEl  = document.getElementById("metricsForPlanInfo");
+    const currentShrinkDollarsEl= document.getElementById("currentShrinkDollars");
+    const panoptycAnnualCostEl  = document.getElementById("panoptycAnnualCost");
+    const projectedShrinkReductionEl = document.getElementById("projectedShrinkReduction");
+    const netAnnualSavingsEl    = document.getElementById("netAnnualSavings");
+    const savingsPerDollarSpentMetricEl = document.getElementById("savingsPerDollarSpentMetric");
+    const roiPerDollarEl        = document.getElementById("roiPerDollar");
+
+    function formatCurrency(value) {
+      return `$${value.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`;
+    }
+
+    function calculateAndDisplay() {
+      const numKiosks           = parseInt(numKiosksInput.value) || 0;
+      const annualRevenue       = parseFloat(annualRevenueInput.value) || 0;
+      const shrinkPercent       = parseFloat(shrinkPercentInput.value) / 100.0 || 0;
+      const anticipatedReductionPercent =
+        parseFloat(anticipatedReductionInput.value) / 100.0 || 0;
+
+      // Update each plan’s monthly cost & reviews
+      silverMonthlyCostEl.textContent =
+        formatCurrency(plans.Silver.pricePerKiosk * numKiosks) + "/mo";
+      silverReviewsEl.textContent =
+        (plans.Silver.reviewsPerKiosk * numKiosks).toLocaleString();
+      goldMonthlyCostEl.textContent =
+        formatCurrency(plans.Gold.pricePerKiosk * numKiosks) + "/mo";
+      goldReviewsEl.textContent =
+        (plans.Gold.reviewsPerKiosk * numKiosks).toLocaleString();
+      diamondMonthlyCostEl.textContent =
+        formatCurrency(plans.Diamond.pricePerKiosk * numKiosks) + "/mo";
+      diamondReviewsEl.textContent =
+        (plans.Diamond.reviewsPerKiosk * numKiosks).toLocaleString();
+
+      // Clear any previous highlighting
+      Object.values(plans).forEach((planData) => {
+        const tierCard = document.getElementById(planData.cardId);
+        tierCard.classList.remove(
+          "border-2",
+          "shadow-xl",
+          planData.recommendedClass,
+          "manual-selection-highlight"
+        );
+        tierCard.style.borderColor = "";
+      });
+      recommendationCardEl.className = "card";
+
+      // Compute shrink
+      const currentAnnualShrinkDollars = annualRevenue * shrinkPercent;
+      currentShrinkDollarsEl.textContent = formatCurrency(currentAnnualShrinkDollars);
+
+      // Recommendation logic
+      let autoRecommendedPlanName = "N/A";
+      let autoBestPlanDetails = null;
+      let autoRecAnnualCost = 0;
+      const targetSavingsPerDollar = 2.0;
+      recommendationBasisEl.textContent =
+        "plan recommendation based on number of kiosks and annual shrink";
+
+      if (annualRevenue > 0 && shrinkPercent > 0 && numKiosks > 0) {
+        const hypotheticalSavingsForRecommendation = currentAnnualShrinkDollars * 0.25;
+        let minDifferenceAboveTarget = Infinity;
+
+        for (const [name, data] of Object.entries(plans)) {
+          const planMonthlyCost = data.pricePerKiosk * numKiosks;
+          const planAnnualCostIter = planMonthlyCost * 12;
+          if (planAnnualCostIter > 0) {
+            const savingsPerDollarForRec =
+              hypotheticalSavingsForRecommendation / planAnnualCostIter;
+            if (savingsPerDollarForRec > targetSavingsPerDollar) {
+              const difference = savingsPerDollarForRec - targetSavingsPerDollar;
+              if (difference < minDifferenceAboveTarget) {
+                minDifferenceAboveTarget = difference;
+                autoRecommendedPlanName = name;
+                autoRecAnnualCost = planAnnualCostIter;
+                autoBestPlanDetails = data;
+              } else if (difference === minDifferenceAboveTarget) {
+                if (planAnnualCostIter < autoRecAnnualCost) {
+                  autoRecommendedPlanName = name;
+                  autoRecAnnualCost = planAnnualCostIter;
+                  autoBestPlanDetails = data;
+                }
+              }
+            }
+          }
+        }
+
+        // Fallback to Silver if none met the ROI threshold
+        if (autoRecommendedPlanName === "N/A") {
+          autoRecommendedPlanName = "Silver";
+          autoBestPlanDetails = plans.Silver;
+          if (numKiosks > 0) {
+            autoRecAnnualCost = plans.Silver.pricePerKiosk * numKiosks * 12;
+          } else {
+            autoRecAnnualCost = 0;
+          }
+        }
+      }
+
+      // Apply highlighting for the recommended plan
+      if (autoRecommendedPlanName !== "N/A" && autoBestPlanDetails) {
+        recommendedPlanEl.innerHTML = `Recommended Plan: <span class="font-bold ${autoBestPlanDetails.colorClass}">${autoRecommendedPlanName.toUpperCase()}</span>`;
+        const autoRecTierCardEl = document.getElementById(autoBestPlanDetails.cardId);
+        autoRecTierCardEl.classList.add(
+          "border-2",
+          "shadow-xl",
+          autoBestPlanDetails.recommendedClass
+        );
+        if (autoBestPlanDetails.colorClass === "plan-silver")
+          autoRecTierCardEl.style.borderColor = "#3b82f6";
+        if (autoBestPlanDetails.colorClass === "plan-gold")
+          autoRecTierCardEl.style.borderColor = "#ca8a04";
+        if (autoBestPlanDetails.colorClass === "plan-diamond")
+          autoRecTierCardEl.style.borderColor = "#a855f7";
+
+        recommendationCardEl.classList.add(autoBestPlanDetails.recommendedClass, "border-2");
+        if (autoBestPlanDetails.colorClass === "plan-silver")
+          recommendationCardEl.style.borderColor = "#3b82f6";
+        if (autoBestPlanDetails.colorClass === "plan-gold")
+          recommendationCardEl.style.borderColor = "#ca8a04";
+        if (autoBestPlanDetails.colorClass === "plan-diamond")
+          recommendationCardEl.style.borderColor = "#a855f7";
+      } else if (annualRevenue <= 0 || shrinkPercent <= 0 || numKiosks <= 0) {
+        recommendedPlanEl.textContent = "Recommended Plan: Enter valid revenue & shrink data";
+        recommendedPlanEl.className = "text-lg text-orange-600";
+      } else {
+        recommendedPlanEl.textContent = "Recommended Plan: N/A";
+        recommendedPlanEl.className = "text-lg text-red-600";
+      }
+
+      // Metrics for the chosen plan (either manually selected or auto recommendation)
+      let planForMetricsName = manuallySelectedPlanName
+        ? manuallySelectedPlanName
+        : autoRecommendedPlanName;
+      let planForMetricsDetails = plans[planForMetricsName];
+      let planForMetricsAnnualCost = 0;
+
+      if (planForMetricsDetails && numKiosks > 0) {
+        planForMetricsAnnualCost = planForMetricsDetails.pricePerKiosk * numKiosks * 12;
+        metricsForPlanInfoEl.textContent = `(Showing metrics for ${planForMetricsName} plan)`;
+        if (manuallySelectedPlanName) {
+          const manualSelectionCardEl = document.getElementById(
+            plans[manuallySelectedPlanName].cardId
+          );
+          manualSelectionCardEl.classList.add("manual-selection-highlight");
+        }
+      } else {
+        metricsForPlanInfoEl.textContent = "";
+        if (autoRecommendedPlanName === "N/A") {
+          planForMetricsName = "N/A";
+        }
+      }
+
+      // Update labels based on selected plan
+      const panoptycCostLabel = document
+        .querySelector("#panoptycAnnualCost")
+        .parentElement.firstChild;
+      const savingsPerDollarLabel = document
+        .querySelector("#savingsPerDollarSpentMetric")
+        .parentElement.firstChild;
+      const valuePropLabel = document.querySelector("#roiPerDollar").parentElement;
+
+      if (planForMetricsName !== "N/A" && planForMetricsName) {
+        panoptycCostLabel.textContent = `Panoptyc Annual Cost (${planForMetricsName} Plan) ($):`;
+        savingsPerDollarLabel.textContent = `Savings per $1 spent (on ${planForMetricsName} Plan):`;
+        valuePropLabel.firstChild.textContent = `For every $1 spent on the ${planForMetricsName} Panoptyc Plan, you get back: `;
+      } else {
+        panoptycCostLabel.textContent = `Panoptyc Annual Cost (Selected Plan) ($):`;
+        savingsPerDollarLabel.textContent = `Savings per $1 spent (on Selected Plan):`;
+        valuePropLabel.firstChild.textContent = `For every $1 spent on the Selected Panoptyc Plan, you get back: `;
+      }
+
+      // Populate metric values
+      panoptycAnnualCostEl.textContent = formatCurrency(planForMetricsAnnualCost);
+      const projectedShrinkReductionDollars = currentAnnualShrinkDollars * anticipatedReductionPercent;
+      projectedShrinkReductionEl.textContent = formatCurrency(projectedShrinkReductionDollars);
+      const netAnnualSavings = projectedShrinkReductionDollars - planForMetricsAnnualCost;
+      netAnnualSavingsEl.textContent = formatCurrency(netAnnualSavings);
+      netAnnualSavingsEl.className = `output-value ${
+        netAnnualSavings >= 0 ? "text-green-600" : "text-red-600"
+      }`;
+
+      if (planForMetricsAnnualCost > 0) {
+        const roiPerDollarValue = projectedShrinkReductionDollars / planForMetricsAnnualCost;
+        roiPerDollarEl.textContent = formatCurrency(roiPerDollarValue);
+        savingsPerDollarSpentMetricEl.textContent = formatCurrency(roiPerDollarValue);
+      } else {
+        roiPerDollarEl.textContent = "$0.00 (or N/A)";
+        savingsPerDollarSpentMetricEl.textContent = "$0.00 (or N/A)";
+      }
+    }
+
+    // Re‐calculate whenever inputs change or a plan is clicked
+    [numKiosksInput, annualRevenueInput, shrinkPercentInput, anticipatedReductionInput].forEach(
+      (input) => {
+        input.addEventListener("input", () => {
+          manuallySelectedPlanName = null;
+          calculateAndDisplay();
+        });
+      }
+    );
+
+    Object.keys(plans).forEach((planName) => {
+      const cardElement = document.getElementById(plans[planName].cardId);
+      cardElement.addEventListener("click", () => {
+        manuallySelectedPlanName = planName;
+        calculateAndDisplay();
+      });
+    });
+
+    // Initial calculation on page load
+    calculateAndDisplay();
+  </script>
+  <!-- ------------------------------------------------------------
+       End Original JavaScript
+       ------------------------------------------------------------ -->
+</body>
+</html>
