@@ -15,7 +15,7 @@
   />
 
   <style>
-    /* Reset default margins/padding for iframe alignment */
+    /* 1) Reset default margins/padding so content isn’t shifted */
     html, body {
       margin: 0;
       padding: 0;
@@ -25,9 +25,10 @@
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f3f4f6; /* Tailwind gray-100 */
-      padding: 1rem; /* Equivalent to p-4, will add some breathing space */
+      padding: 1rem;           /* Some breathing room */
     }
 
+    /* 2) Generic “card” styling */
     .card {
       background-color: white;
       border-radius: 0.5rem; /* rounded-lg */
@@ -38,6 +39,7 @@
       margin-bottom: 1.5rem; /* mb-6 */
     }
 
+    /* 3) Pricing‐tier card styling */
     .tier-card {
       text-align: center;
       border: 1px solid #e5e7eb; /* gray-200 */
@@ -46,7 +48,6 @@
       transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
       padding: 1rem;             /* p-4 */
     }
-
     .tier-card:hover {
       transform: translateY(-2px);
       box-shadow:
@@ -54,31 +55,33 @@
         0 4px 6px -2px rgba(0, 0, 0, 0.1);
     }
 
-    .plan-silver   { color: #3b82f6; }  /* Tailwind blue-500 */
-    .plan-gold     { color: #ca8a04; }  /* Tailwind yellow-600 */
-    .plan-diamond  { color: #a855f7; }  /* Tailwind purple-600 */
+    /* 4) Text colors for each plan */
+    .plan-silver  { color: #3b82f6; }  /* blue-500 */
+    .plan-gold    { color: #ca8a04; }  /* yellow-600 */
+    .plan-diamond { color: #a855f7; }  /* purple-600 */
 
+    /* 5) “Recommended” background + border for each plan */
     .recommended-plan-silver   { border-color: #3b82f6; background-color: #eff6ff; } /* blue-50 */
     .recommended-plan-gold     { border-color: #ca8a04; background-color: #fefce8; } /* yellow-50 */
     .recommended-plan-diamond  { border-color: #a855f7; background-color: #faf5ff; } /* purple-50 */
 
+    /* 6) Manual‐selection highlight (thick green border) */
     .manual-selection-highlight {
       border-width: 3px !important;
-      border-color: #10B981 !important; /* Tailwind green-500 */
+      border-color: #10B981 !important; /* green-500 */
       box-shadow: 0 0 0 3px #10B981;
     }
 
+    /* 7) Labels and inputs styling */
     label {
-      font-weight: 500;  /* font-medium */
-      color: #374151;    /* gray-700 */
+      font-weight: 500;    /* medium */
+      color: #374151;      /* gray-700 */
       display: block;
       margin-bottom: 0.25rem; /* mb-1 */
     }
-
     .input-group {
       margin-bottom: 1rem; /* mb-4 */
     }
-
     .input-group input {
       width: 100%;
       padding: 0.5rem 0.75rem;   /* py-2 px-3 */
@@ -86,20 +89,21 @@
       border-radius: 0.375rem;   /* rounded-md */
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
       font-size: 1rem;
-      color: #111827; /* gray-900 */
+      color: #111827;            /* gray-900 */
     }
-
     .input-group input:focus {
       outline: none;
       border-color: #3b82f6; /* blue-500 */
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
     }
 
+    /* 8) Numeric output styling */
     .output-value {
-      font-weight: 600; /* font-semibold */
+      font-weight: 600; /* semibold */
     }
   </style>
 </head>
+
 <body>
   <div class="max-w-6xl mx-auto">
     <!-- Page Header -->
@@ -111,7 +115,7 @@
 
     <!-- Grid: Sidebar (Inputs) + Main (Results) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Sidebar: Cafe Inputs -->
+      <!-- Sidebar: Inputs -->
       <div class="md:col-span-1 card">
         <h2 class="text-xl font-semibold text-gray-700 mb-4">Cafe Inputs</h2>
         <div class="input-group">
@@ -159,13 +163,13 @@
 
       <!-- Main Content: Pricing Tiers, Recommendation, Metrics, Value -->
       <div class="md:col-span-2 space-y-6">
-        <!-- 1) Pricing Tiers (Monthly) Card -->
+        <!-- 1) Pricing Tiers (Monthly) -->
         <div class="card">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">
             Pricing Tiers (Monthly)
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <!-- Silver Plan Card -->
+            <!-- Silver -->
             <div
               id="silverPlanCard"
               class="tier-card plan-silver"
@@ -180,7 +184,7 @@
               </p>
             </div>
 
-            <!-- Gold Plan Card -->
+            <!-- Gold -->
             <div
               id="goldPlanCard"
               class="tier-card plan-gold"
@@ -195,7 +199,7 @@
               </p>
             </div>
 
-            <!-- Diamond Plan Card -->
+            <!-- Diamond -->
             <div
               id="diamondPlanCard"
               class="tier-card plan-diamond"
@@ -212,7 +216,7 @@
           </div>
         </div>
 
-        <!-- 2) Plan Recommendation Card -->
+        <!-- 2) Plan Recommendation -->
         <div id="recommendationCard" class="card border-2 border-gray-200">
           <h2 class="text-xl font-semibold text-gray-700 mb-2">
             Plan Recommendation
@@ -228,7 +232,7 @@
           </p>
         </div>
 
-        <!-- 3) Shrink Metrics Card -->
+        <!-- 3) Shrink Metrics -->
         <div class="card">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-semibold text-gray-700">Shrink Metrics</h2>
@@ -272,7 +276,7 @@
           </div>
         </div>
 
-        <!-- 4) Value Proposition Card -->
+        <!-- 4) Value Proposition -->
         <div class="card">
           <h2 class="text-xl font-semibold text-gray-700 mb-2">
             Value Proposition
@@ -289,12 +293,12 @@
     </div>
   </div>
 
-  <!-- JavaScript: Calculation & DOM Updates Using “(roi – 2.0)” Logic -->
+  <!-- JavaScript: “(ROI – 2.0)” Recommendation Logic Restored -->
   <script>
-    // Track manual override (user clicks a plan)
+    // 1) Track manual override when user clicks a plan card
     let manuallySelectedPlanName = null;
 
-    // Plan definitions
+    // 2) Plan definitions
     const plans = {
       Silver:  {
         pricePerKiosk: 300,
@@ -319,13 +323,12 @@
       }
     };
 
-    // Grab input elements
+    // 3) Grab all relevant DOM elements
     const numKiosksInput            = document.getElementById('numKiosks');
     const annualRevenueInput        = document.getElementById('annualRevenue');
     const shrinkPercentInput        = document.getElementById('shrinkPercent');
     const anticipatedReductionInput = document.getElementById('anticipatedReduction');
 
-    // Grab elements for pricing text
     const silverMonthlyCostEl       = document.getElementById('silverMonthlyCost');
     const silverReviewsEl           = document.getElementById('silverReviews');
     const goldMonthlyCostEl         = document.getElementById('goldMonthlyCost');
@@ -333,7 +336,6 @@
     const diamondMonthlyCostEl      = document.getElementById('diamondMonthlyCost');
     const diamondReviewsEl          = document.getElementById('diamondReviews');
 
-    // Recommendation & metrics elements
     const recommendedPlanEl         = document.getElementById('recommendedPlan');
     const recommendationCardEl      = document.getElementById('recommendationCard');
     const recommendationBasisEl     = document.getElementById('recommendationBasis');
@@ -349,7 +351,7 @@
     const valuePropPlanEl           = document.getElementById('valuePropPlan');
     const valuePropROIEl            = document.getElementById('valuePropROI');
 
-    // Utility: format number as US currency
+    // 4) Utility: format a number as US currency
     function formatCurrency(value) {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -357,15 +359,15 @@
       }).format(value);
     }
 
-    // Main calculation & update function
+    // 5) Main calculation & DOM‐update function
     function calculateAndDisplay() {
-      // 1) Read inputs
+      // Read inputs (kiosks, revenue, shrink %, anticipated reduction %)
       const numKiosks = parseInt(numKiosksInput.value) || 0;
       const annualRevenue = parseFloat(annualRevenueInput.value) || 0;
       const shrinkPercent = parseFloat(shrinkPercentInput.value) / 100 || 0;
       const anticipatedReductionPercent = parseFloat(anticipatedReductionInput.value) / 100 || 0;
 
-      // 2) Update each plan’s monthly cost & reviews
+      // 1) Update each plan’s monthly cost & reviews
       silverMonthlyCostEl.textContent  = formatCurrency(plans.Silver.pricePerKiosk  * numKiosks) + '/mo';
       silverReviewsEl.textContent      = (plans.Silver.reviewsPerKiosk * numKiosks).toLocaleString() + ' reviews/mo';
 
@@ -375,7 +377,7 @@
       diamondMonthlyCostEl.textContent = formatCurrency(plans.Diamond.pricePerKiosk * numKiosks) + '/mo';
       diamondReviewsEl.textContent     = (plans.Diamond.reviewsPerKiosk * numKiosks).toLocaleString() + ' reviews/mo';
 
-      // 3) Clear previous highlights
+      // 2) Clear any previous highlighting on all tier cards
       Object.values(plans).forEach(planData => {
         const card = document.getElementById(planData.cardId);
         card.classList.remove('border-2', planData.recommendedClass, 'manual-selection-highlight');
@@ -383,12 +385,12 @@
       });
       recommendationCardEl.className = 'card';
 
-      // 4) Compute current annual shrink
+      // 3) Compute “Current Annual Shrink” in dollars
       const currentAnnualShrinkDollars = annualRevenue * shrinkPercent;
       currentShrinkDollarsEl.textContent = formatCurrency(currentAnnualShrinkDollars);
 
-      // 5) Recommendation logic: compare (roi - 2.0)
-      const hypotheticalSavings = currentAnnualShrinkDollars * 0.25;
+      // 4) Recommendation logic using “(ROI – 2.0)” approach
+      const hypotheticalSavings = currentAnnualShrinkDollars * 0.25; // 25% of current shrink
       const ROI_TARGET = 2.0;
       let autoRecommendedPlanName = "N/A";
       let autoBestPlanDetails = null;
@@ -400,54 +402,55 @@
           if (annualCost <= 0) return;
           const roi = hypotheticalSavings / annualCost;
           const difference = roi - ROI_TARGET;
+          // If ROI ≥ 2.0 and this difference is the smallest so far, pick that plan
           if (difference >= 0 && difference < smallestDifference) {
             smallestDifference = difference;
             autoRecommendedPlanName = name;
             autoBestPlanDetails = data;
           }
         });
-
-        // Fallback to Silver if none crossed ROI ≥ 2
+        // Fallback to Silver if none meet ROI ≥ 2.0
         if (autoRecommendedPlanName === "N/A") {
           autoRecommendedPlanName = "Silver";
           autoBestPlanDetails = plans.Silver;
         }
       }
 
-      // 6) Determine “final” plan (manual override or auto)
+      // 5) Decide which plan to “show metrics for”: manual override or auto
       const finalPlanName = manuallySelectedPlanName || autoRecommendedPlanName;
       const finalPlanDetails = plans[finalPlanName] || plans.Silver;
       const finalAnnualCost = finalPlanDetails.pricePerKiosk * numKiosks * 12;
 
-      // 7) Highlight auto-recommended card
+      // 6) Highlight auto‐recommended card (light colored bg + border)
       if (autoBestPlanDetails) {
         const recCard = document.getElementById(autoBestPlanDetails.cardId);
         recCard.classList.add(autoBestPlanDetails.recommendedClass, 'border-2');
-        if (autoBestPlanDetails.colorClass === 'plan-silver')  recCard.style.borderColor = '#3b82f6';
-        if (autoBestPlanDetails.colorClass === 'plan-gold')    recCard.style.borderColor = '#ca8a04';
-        if (autoBestPlanDetails.colorClass === 'plan-diamond') recCard.style.borderColor = '#a855f7';
+        // Force border color to match plan
+        if (autoBestPlanDetails.colorClass === 'plan-silver')   recCard.style.borderColor = '#3b82f6';
+        if (autoBestPlanDetails.colorClass === 'plan-gold')     recCard.style.borderColor = '#ca8a04';
+        if (autoBestPlanDetails.colorClass === 'plan-diamond')  recCard.style.borderColor = '#a855f7';
       }
 
-      // 8) Highlight manual‐selected card if overridden
+      // 7) Highlight manual‐selected plan if user clicked one
       if (manuallySelectedPlanName) {
         const selCard = document.getElementById(finalPlanDetails.cardId);
         selCard.classList.add('manual-selection-highlight');
       }
 
-      // 9) Update “Recommended Plan” text + border
+      // 8) Update “Recommended Plan” panel text & border
       recommendedPlanEl.innerHTML = `Recommended Plan: <span class="font-bold ${finalPlanDetails.colorClass}">${finalPlanName.toUpperCase()}</span>`;
       recommendationCardEl.classList.add('border-2');
-      if (finalPlanDetails.colorClass === 'plan-silver')  recommendationCardEl.style.borderColor = '#3b82f6';
-      if (finalPlanDetails.colorClass === 'plan-gold')    recommendationCardEl.style.borderColor = '#ca8a04';
-      if (finalPlanDetails.colorClass === 'plan-diamond') recommendationCardEl.style.borderColor = '#a855f7';
+      if (finalPlanDetails.colorClass === 'plan-silver')   recommendationCardEl.style.borderColor = '#3b82f6';
+      if (finalPlanDetails.colorClass === 'plan-gold')     recommendationCardEl.style.borderColor = '#ca8a04';
+      if (finalPlanDetails.colorClass === 'plan-diamond')  recommendationCardEl.style.borderColor = '#a855f7';
 
-      // 10) If inputs invalid, show warning
+      // 9) If inputs are invalid, override recommendation text
       if (annualRevenue <= 0 || shrinkPercent <= 0 || numKiosks <= 0) {
         recommendedPlanEl.textContent = "Recommended Plan: ENTER VALID VALUES";
         recommendedPlanEl.className = "text-lg text-orange-600";
       }
 
-      // 11) Shrink Metrics & ROI updates
+      // 10) Populate Shrink Metrics & ROI using the “final” plan
       panoptycAnnualCostEl.textContent = formatCurrency(finalAnnualCost);
 
       const projectedReductionDollars = currentAnnualShrinkDollars * anticipatedReductionPercent;
@@ -462,25 +465,25 @@
       roiPerDollarEl.textContent = formatCurrency(savingsPerDollar);
       savingsPerDollarSpentMetricEl.textContent = formatCurrency(savingsPerDollar);
 
-      // 12) Update plan names in labels
+      // 11) Fill in plan names in labels
       planNameLabel.textContent = finalPlanName;
       planNameLabel2.textContent = finalPlanName;
       valuePropPlanEl.textContent = finalPlanName;
       valuePropROIEl.textContent = formatCurrency(savingsPerDollar);
 
-      // 13) Update “(Showing metrics for …)” text
+      // 12) Update “(Showing metrics for …)” text
       metricsForPlanInfoEl.textContent = `(Showing metrics for ${finalPlanName} plan)`;
     }
 
-    // Attach “input” listeners to recalc on any change
+    // 13) Re-calculate whenever any input changes
     [numKiosksInput, annualRevenueInput, shrinkPercentInput, anticipatedReductionInput].forEach(input => {
       input.addEventListener('input', () => {
-        manuallySelectedPlanName = null; // clear manual override
+        manuallySelectedPlanName = null;  // clear manual override
         calculateAndDisplay();
       });
     });
 
-    // Attach “click” listeners for manual plan selection
+    // 14) Manual selection: when user clicks a tier card
     Object.keys(plans).forEach(planName => {
       const cardElement = document.getElementById(plans[planName].cardId);
       cardElement.addEventListener('click', () => {
@@ -489,7 +492,7 @@
       });
     });
 
-    // Initial render on page load
+    // 15) Initial render on page load
     calculateAndDisplay();
   </script>
 </body>
