@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panoptyc Dining Theft Plans</title>
 
   <!-- Tailwind CSS (CDN for standalone HTML) -->
@@ -15,7 +15,7 @@
   />
 
   <style>
-    /* 1) Reset margins/padding so content is flush to the iframe */
+    /* 1) Reset margins/padding (so it aligns inside an iframe) */
     html, body {
       margin: 0;
       padding: 0;
@@ -105,16 +105,16 @@
 
 <body>
   <div class="max-w-6xl mx-auto">
-    <!-- === Header === -->
+    <!-- Header -->
     <header class="mb-8 text-center">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
         Panoptyc Dining Theft Plans
       </h1>
     </header>
 
-    <!-- === Grid: Sidebar (Inputs) + Main (Results) === -->
+    <!-- Grid: Sidebar (Inputs) + Main (Results) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Sidebar: Cafe Inputs -->
+      <!-- Sidebar: Inputs -->
       <div class="md:col-span-1 card">
         <h2 class="text-xl font-semibold text-gray-700 mb-4">Cafe Inputs</h2>
         <div class="input-group">
@@ -155,14 +155,14 @@
             step="1"
           />
           <p class="text-xs text-gray-500 mt-1">
-            Used for Shrink Metrics & ROI per \$1 calculations.
+            Used for Shrink Metrics & ROI per $1 calculations.
           </p>
         </div>
       </div>
 
       <!-- Main Content: Pricing Tiers + Recommendation + Metrics + Value -->
       <div class="md:col-span-2 space-y-6">
-        <!-- 1) Pricing Tiers Card -->
+        <!-- 1) Pricing Tiers (Monthly) -->
         <div class="card">
           <h2 class="text-xl font-semibold text-gray-700 mb-4">
             Pricing Tiers (Monthly)
@@ -266,7 +266,7 @@
             </div>
             <div class="flex justify-between">
               <span>
-                Savings per \$1 Spent (on <span id="planNameLabel2">—</span> Plan):
+                Savings per $1 Spent (on <span id="planNameLabel2">—</span> Plan):
               </span>
               <span class="output-value text-green-600" id="savingsPerDollarSpentMetric">
                 $0.00
@@ -281,11 +281,11 @@
             Value Proposition
           </h2>
           <p class="text-gray-800">
-            For every \$1 spent on the
+            For every $1 spent on the
             <span class="font-semibold" id="valuePropPlan">—</span> Plan, you
             get back:
             <span class="font-semibold text-green-600" id="valuePropROI">
-              \$0.00
+              $0.00
             </span>
             in reduced theft.
           </p>
@@ -294,9 +294,9 @@
     </div>
   </div>
 
-  <!-- JavaScript: (ROI – 2.0) Recommendation Logic with ID fixes -->
+  <!-- JavaScript: (ROI – 2.0) Recommendation Logic, with IDs fixed -->
   <script>
-    // 1) Track manual override when a plan card is clicked
+    // 1) Track manual override when plan card is clicked
     let manuallySelectedPlanName = null;
 
     // 2) Plan definitions
@@ -346,8 +346,7 @@
     const projectedShrinkReductionEl= document.getElementById('projectedShrinkReduction');
     const netAnnualSavingsEl        = document.getElementById('netAnnualSavings');
     const savingsPerDollarSpentMetricEl = document.getElementById('savingsPerDollarSpentMetric');
-    // Remove any reference to a non-existent roiPerDollar ID
-    // const roiPerDollarEl = document.getElementById('roiPerDollar');
+    // (No more references to an ID called roiPerDollar)
     const planNameLabel             = document.getElementById('planNameLabel');
     const planNameLabel2            = document.getElementById('planNameLabel2');
     const valuePropPlanEl           = document.getElementById('valuePropPlan');
@@ -363,7 +362,7 @@
 
     // 5) Main calculation & DOM update function
     function calculateAndDisplay() {
-      // Read inputs
+      // Read inputs (kiosks, revenue, shrink %, anticipated reduction %)
       const numKiosks = parseInt(numKiosksInput.value) || 0;
       const annualRevenue = parseFloat(annualRevenueInput.value) || 0;
       const shrinkPercent = parseFloat(shrinkPercentInput.value) / 100 || 0;
@@ -476,7 +475,7 @@
       metricsForPlanInfoEl.textContent = `(Showing metrics for ${finalPlanName} plan)`;
     }
 
-    // 13) Re‐calculate whenever any input changes
+    // 13) Re‐calculate whenever inputs change
     [numKiosksInput, annualRevenueInput, shrinkPercentInput, anticipatedReductionInput].forEach(input => {
       input.addEventListener('input', () => {
         manuallySelectedPlanName = null; // clear manual override
@@ -485,6 +484,12 @@
     });
 
     // 14) Manual selection: clicking a plan card
+    function selectPlan(planName) {
+      manuallySelectedPlanName = planName;
+      calculateAndDisplay();
+    }
+
+    // 15) Attach event listeners as well (fallback, in case someone changes via JS)
     Object.keys(plans).forEach(planName => {
       const cardElement = document.getElementById(plans[planName].cardId);
       cardElement.addEventListener('click', () => {
@@ -493,7 +498,7 @@
       });
     });
 
-    // 15) Initial render on page load
+    // 16) Initial render on page load
     calculateAndDisplay();
   </script>
 </body>
